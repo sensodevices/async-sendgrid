@@ -1,3 +1,5 @@
+from typing import Optional
+
 import httpx
 
 import async_sendgrid
@@ -8,7 +10,7 @@ class AsyncClient:
     def __init__(
         self,
         api_key,
-        impersonate_subuser: str | None = None,
+        impersonate_subuser: Optional[str] = None,
         host: str = 'https://api.sendgrid.com/v3',
         session=None,
         timeout=None,

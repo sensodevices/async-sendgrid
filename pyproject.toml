@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "async-sendgrid"
+version = "0.0.1"
+description = "SendGrid simple async client based on httpx."
+license = "MIT"
+authors = ["Saltymakov Timofey <saltytimofey@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/sensodevice/async-sendgrid"
+keywords = ["sendgrid", "utilities", "async"]
+classifiers = [
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python",
+    "Topic :: Internet",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development",
+    "Typing :: Typed",
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Utilities"
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+httpx = "^0.21"
