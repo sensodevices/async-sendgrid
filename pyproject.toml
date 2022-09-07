@@ -5,7 +5,7 @@ description = "SendGrid simple async client based on httpx."
 license = "MIT"
 authors = ["Saltymakov Timofey <saltytimofey@gmail.com>"]
 readme = "README.md"
-repository = "https://github.com/sensodevice/async-sendgrid"
+repository = "https://github.com/sensodevices/async-sendgrid"
 keywords = ["sendgrid", "utilities", "async"]
 classifiers = [
     "Intended Audience :: Information Technology",
