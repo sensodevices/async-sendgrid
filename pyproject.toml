@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "async-sendgrid"
-version = "0.0.3"
+version = "0.0.4"
 description = "SendGrid simple async client based on httpx."
 license = "MIT"
 authors = ["Saltymakov Timofey <saltytimofey@gmail.com>"]
@@ -37,4 +37,4 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.6"
 
-httpx = "^0.21"
+httpx = "^0.24.1"
