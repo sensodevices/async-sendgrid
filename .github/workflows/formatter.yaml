@@ -1,0 +1,29 @@
+name: Formatter
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Downloads a copy of the code in your repository before running CI tests
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install black
+        run: pip install black
+
+      - name: Execute mypy
+        run: python -m black async_sendgrid

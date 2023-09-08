@@ -1,0 +1,45 @@
+name: Unit Tests
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      POETRY_NO_INTERACTION: 1
+      PIP_DEFAULT_TIMEOUT: 100  
+
+    steps:
+      # Downloads a copy of the code in your repository before running CI tests
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.5'
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: '1.6.1'
+          virtualenvs-create: false
+          virtualenvs-in-project: false
+
+      - name: Install project
+        run: poetry install --no-root
+
+      - name: Execute Pytest
+        run: poetry run python -m pytest --cov=async_sendgrid tests/unit
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

@@ -34,7 +34,31 @@ classifiers = [
     "Topic :: Utilities"
 ]
 
-[tool.poetry.dependencies]
-python = "^3.6"
+packages = [
+    { include = "sendgrid" },
+]
 
+[tool.poetry.dependencies]
+python = "^3.9"
+sendgrid = "^6.7.0"
 httpx = "^0.24.1"
+
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.2"
+pytest-asyncio = "^0.15.1"
+pytest-cov = "^4.0.0"
+pytest-httpx="^0.24.0"
+mypy = "^1.0.0"
+tox = "^4.11.1"
+
+
+[tool.coverage.report]
+exclude_also = [
+    "if TYPE_CHECKING:",
+    ]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
