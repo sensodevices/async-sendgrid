@@ -1,17 +1,16 @@
 from __future__ import annotations
-import os
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 from async_sendgrid.utils import create_session
-
+import async_sendgrid
 
 if TYPE_CHECKING:
     from typing import Any, Optional
-    from sendgrid.helpers.mail import Mail
-    import httpx
+    from sendgrid.helpers.mail import Mail  # type: ignore
+    from httpx import Response  # type: ignore
 
 
-class BaseAsyncClient(ABC):
+class BaseSendgridAPI(ABC):
     @property
     @abstractmethod
     def api_key(self) -> str:
@@ -33,11 +32,11 @@ class BaseAsyncClient(ABC):
         """Not implemented"""
 
     @abstractmethod
-    async def send(self, message: dict[Any, Any] | Mail) -> httpx.Response:
+    async def send(self, message: dict[Any, Any] | Mail) -> Response:
         """Not implemented"""
 
 
-class AsyncClient(BaseAsyncClient):
+class SendgridAPI(BaseSendgridAPI):
     """
     Construct the Twilio SendGrid v3 API object.
     Note that the underlying client is being set up during initialization,
@@ -53,17 +52,15 @@ class AsyncClient(BaseAsyncClient):
 
     def __init__(
         self,
-        api_key: Optional[str] = None,
+        api_key: str,
         impersonate_subuser: Optional[str] = None,
     ):
-        from . import __version__
-
-        self._api_key = api_key or os.environ["SENDGRID_API_KEY"]
+        self._api_key = api_key
         self._endpoint = "https://api.sendgrid.com/v3/mail/send"
-        self._version = __version__
+        self._version = async_sendgrid.__version__
 
         self._headers = {
-            "Authorization": f"Bearer {api_key}",
+            "Authorization": f"Bearer {self._api_key}",
             "User-Agent": f"async_sendgrid/{self._version};python",
             "Accept": "*/*",
             "Content-Type": "application/json",
@@ -90,16 +87,23 @@ class AsyncClient(BaseAsyncClient):
     def headers(self) -> dict[Any, Any]:
         return self._headers
 
-    async def send(self, message: Mail) -> httpx.Response:
+    async def send(self, message: Mail) -> Response:
         """
         Make a Twilio SendGrid v3 API request with the request body generated
         by the Mail object
 
-        :param message: The Twilio SendGrid v3 API request body generated
-            by the Mail object or dict
+        Parameters:
+        ----
+            :param message: The Twilio SendGrid v3 API request body generated
+                by the Mail object or dict
+        Returns:
+        ----
+            :return: The Twilio SendGrid v3 API response
         """
         json_message = message.get()
-        response = await self._session.post(url=self._endpoint, json=json_message)
+        response = await self._session.post(
+            url=self._endpoint, json=json_message
+        )
         return response
 
     async def __aenter__(self):
@@ -107,5 +111,5 @@ class AsyncClient(BaseAsyncClient):
             self._session = create_session(headers=self._headers)
         return self
 
-    async def __aexit__(self, exc_type, exc, tb):
+    async def __aexit__(self, exc_type: Any, exc: Any, tb: Any):
         await self._session.aclose()
