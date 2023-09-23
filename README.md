@@ -2,7 +2,7 @@
 | --- | --- |
 | Python| ![Python](https://img.shields.io/pypi/pyversions/async-sendgrid) |
 | Package | [![PyPI Latest Release](https://img.shields.io/pypi/v/pandas.svg)](https://pypi.org/project/async-sendgrid/) [![PyPI Downloads](https://img.shields.io/pypi/dm/async-sendgrid.svg?label=PyPI%20downloads)](https://pypi.org/project/async-sendgrid/) |
-| Meta | [![License - MIT](https://img.shields.io/pypi/l/async_sendgrid.svg)](https://github.com/sensodevices/async_sendgrid/blob/main/LICENSE)|
+| Meta | [![License - MIT](https://img.shields.io/pypi/l/async_sendgrid.svg)](https://github.com/sensodevices/async_sendgrid/blob/master/LICENSE)|
 
 # Async-Sendgrid
 

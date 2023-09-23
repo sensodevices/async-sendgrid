@@ -1,0 +1,45 @@
+name: Poetry Composite Action
+description: Set Poetry and Python
+
+inputs:
+    poetry-version:
+      required: true
+      type: string
+
+    poetry-virtualenv:
+      required: false
+      type: boolean
+      default: true
+    
+    poetry-virtualenvs-in-project:
+      required: false
+      type: boolean
+      default: true
+
+    python-version:
+      required: true
+      type: string
+
+runs:
+  using: "composite"
+
+  steps:
+
+    # Downloads a copy of the code in your repository before running CI tests
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: ${{ inputs.poetry-version }}
+        virtualenvs-create: ${{ inputs.poetry-virtualenv }}
+        virtualenvs-in-project: ${{ inputs.poetry-virtualenvs-in-project }}
+
+    - name: Install project
+      run: poetry install --no-root --no-interaction
+      shell: bash

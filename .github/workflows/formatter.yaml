@@ -3,27 +3,28 @@ name: Formatter
 on:
   push:
     branches:
-      - main
+      - master
       - dev
+
   pull_request:
     branches:
-      - main
+      - master
       - dev
+
+  workflow_call:
+
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # Downloads a copy of the code in your repository before running CI tests
-      - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
 
-      - name: Install black
-        run: pip install black
+      - name: Set up Python & Poetry
+        uses: sensodevices/async-sendgrid/.github/actions/build_async_sendgrid@master
+        with:
+          poetry-version: "1.6.1"
+          python-version: "3.11.5"
 
       - name: Execute mypy
-        run: python -m black async_sendgrid
+        run: poetry run black async-sendgrid
