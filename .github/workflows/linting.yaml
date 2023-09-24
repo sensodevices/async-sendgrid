@@ -1,0 +1,29 @@
+name: Linting
+
+on: 
+  push:
+    branches:
+      - master
+      - dev
+
+  pull_request:
+    branches:
+      - master
+      - dev
+  workflow_call:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Set up Python & Poetry
+        uses: sensodevices/async-sendgrid/.github/actions/build_async_sendgrid@master
+        with:
+          poetry-version: "1.6.1"
+          python-version: "3.11.5"
+
+      - name: Execute flake8
+        run: poetry run flake8 async-sendgrid

@@ -1,0 +1,37 @@
+name: Unit Tests
+
+on: 
+  push:
+    branches:
+      - master
+      - dev
+
+  pull_request:
+    branches:
+      - master
+      - dev
+  
+  workflow_call:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Set up Python & Poetry
+        uses: sensodevices/async-sendgrid/.github/actions/build_async_sendgrid@master
+        with:
+          poetry-version: "1.6.1"
+          python-version: "3.11.5"
+          poetry-virtualenv: false
+          poetry-virtualenvs-in-project: false
+
+
+      - name: Execute Pytest
+        run: poetry run python -m pytest --cov=async-sendgrid tests/unit
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

@@ -1,0 +1,78 @@
+# This workflow will upload a Python Package using Twine when a release is created
+# For more information see: https://help.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions#publishing-to-package-registries
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Release and Upload Python Package on PyPI
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+    unit:
+      name: Unit Tests
+      uses: sensodevices/async-sendgrid/.github/workflows/unit.yaml@master
+
+    typing:
+      name: Mypy
+      uses: sensodevices/async-sendgrid/.github/workflows/typing.yaml@master
+
+    linting:
+      name: Flake8
+      uses: sensodevices/async-sendgrid/.github/workflows/linting.yaml@master
+
+    integration:
+        name: Integration Tests
+        uses: sensodevices/async-sendgrid/.github/workflows/integration.yaml@master
+
+    formatter:
+      name: Black
+      uses: sensodevices/async-sendgrid/.github/workflows/formatter.yaml@master
+
+    release:
+      runs-on: ubuntu-latest
+      name: Release version
+      needs: [unit, typing, linting, formatter, integration]
+
+      permissions:
+        contents: write
+
+      steps:
+        - name: Check out repository
+          uses: actions/checkout@v3
+        - name: Initiate release
+          uses: ncipollo/release-action@v1
+          with:
+            artifacts: "release.tar.gz,foo/*.txt"
+
+    deploy:
+      runs-on: ubuntu-latest
+      needs: release
+  
+      env:
+        environment: production
+
+      permissions:
+        contents: read
+
+      steps:
+        - name: Set up Python & Poetry
+          uses: sensodevices/async-sendgrid/.github/actions/build_async_sendgrid@master
+          with:
+            poetry-version: "1.6.1"
+            python-version: "3.11.5"
+
+        - name: Build package
+          run: poetry build
+
+        - name: Publish distribution 📦 to PyPI
+          uses: pypa/gh-action-pypi-publish@release/v1
+          with:
+            user: __token__
+            password: ${{ secrets.PYPI_API_TOKEN }}
+  
