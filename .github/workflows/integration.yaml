@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Set up Python & Poetry
-        uses: sensodevices/async-sendgrid/.github/actions/build_async_sendgrid@master
+        uses: sensodevices/async-sendgrid/.github/actions/build_async_sendgrid
         with:
           poetry-version: '1.6.1'
           python-version: ${{ matrix.python-version }}

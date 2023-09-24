@@ -21,10 +21,10 @@ jobs:
     steps:
 
       - name: Set up Python & Poetry
-        uses: sensodevices/async-sendgrid/.github/actions/build_async_sendgrid@master
+        uses: sensodevices/async-sendgrid/.github/actions/build_async_sendgrid
         with:
           poetry-version: "1.6.1"
           python-version: "3.11.5"
 
       - name: Execute mypy
-        run: poetry run black async-sendgrid
+        run: poetry run black async_sendgrid
